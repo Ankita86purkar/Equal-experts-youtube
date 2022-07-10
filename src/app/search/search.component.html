@@ -1,0 +1,35 @@
+<section>
+    <form [formGroup]="searchForm">
+        <label>
+           <input type="text" (keyup)="searchTerm.next($event)" formControlName="search" placeholder="Search videos..." />
+        
+           <div *ngIf="loading">
+                <p class="search-message">Searching</p>
+           </div>
+        </label>    
+
+    </form>
+
+    <div *ngIf="searchResults">
+      <div class="results" >
+        <div class="repo" *ngFor="let result of paginationElements | paginate: { itemsPerPage: 5, currentPage: page }">
+            <div>
+                <img loading="lazy" [attr.src]="result.snippet.thumbnails.medium.url"
+                    width="300"
+                    height="auto"
+                    alt="avatar"
+                />
+                <h2>{{result.snippet.channelTitle}}</h2>
+            </div>  
+        </div>
+    </div>
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+   
+    <div *ngIf="errorMessage" class="errorMessage">
+        <h2>Error</h2>
+        <p class="error">{{errorMessage}}</p>
+    </div>
+
+
+</section>
